@@ -1,9 +1,11 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 
+//we are combining union types of product and document using mongo urm
 export type ProductDocument = Product & Document;
 
-@Schema({ timestamps: true }) // Adds createdAt and updatedAt fields automatically
+//Creating Schema using Schema Decorator and asking Schema to have an option of timestamp
+@Schema({ timestamps: true })
 export class Product {
   @Prop({ required: true })
   name: string;
@@ -18,10 +20,11 @@ export class Product {
   quantity: number;
 
   @Prop()
-  imageUrl: string;
+  description?: string;
 
   @Prop()
-  description: string;
+  imageUrl?: string;
 }
+//class being forwarded as collection to mongodb through mongoose as mongoose shema
 
 export const ProductSchema = SchemaFactory.createForClass(Product);

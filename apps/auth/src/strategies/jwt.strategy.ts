@@ -5,19 +5,17 @@ import { ExtractJwt, Strategy } from "passport-jwt"; // Used for handling JWT ex
 import { ConfigService } from "@nestjs/config";  // Helps access environment variables (e.g., secret keys)
 
 @Injectable()
-export class JwtStratergy extends PassportStrategy(Strategy) {
+export class JwtStrategy extends PassportStrategy(Strategy) {
+  constructor(configService: ConfigService) {
+    super({
+      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+      ignoreExpiration:false,
+      secretOrKey: configService.get<string>('JWT_SECRET') || 'fallback_secret',
+    });
+     console.log('JwtStrategy initialized');
+  }
 
-    
-    constructor(configService: ConfigService) {
-       
-        const secret_key = configService.get<string>('JWT_SECRET')
-        super({
-            jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-            secretOrKey: secret_key || 'fallback_secret' 
-        })
-    }
-    
-    async validate(payload: any) {
-        return { email: payload.email, role: payload.role }
-    }
+  async validate(payload: any) {
+    return { email: payload.email, role: payload.role };
+  }
 }
