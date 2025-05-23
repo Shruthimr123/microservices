@@ -55,7 +55,11 @@ import { AuthModule } from 'apps/auth/src/auth.module';
   imports: [
     AuthModule,
     // Load environment variables globally
-    ConfigModule.forRoot({ isGlobal: true }),
+    ConfigModule.forRoot({
+       isGlobal: true,
+       envFilePath:'apps/product/.env'
+
+     }),
 
     // Connect to MongoDB
     MongooseModule.forRootAsync({

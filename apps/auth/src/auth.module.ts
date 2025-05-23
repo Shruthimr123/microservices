@@ -9,8 +9,13 @@ import { JwtStrategy } from "./strategies/jwt.strategy"; // <-- Import your JwtS
 
 @Module({
   imports: [
+    ConfigModule.forRoot(
+      {
+        isGlobal:true,
+        envFilePath: 'apps/auth/.env'
+      }
+    ),
     PassportModule.register({ defaultStrategy: 'jwt' }), // register jwt as default strategy
-    ConfigModule.forRoot(),
     ClientsModule.registerAsync([
       {
         name: 'USER_SERVICE',
