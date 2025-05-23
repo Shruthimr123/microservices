@@ -7,6 +7,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { RolesGuard } from 'apps/utilitis/guards/roles.guard';
 import { Roles } from 'apps/utilitis/decorators/roles.decorators';
 import { UpdateProductDto } from './dto/update-product.dto';
+import { JwtAuthGuard } from 'apps/auth/src/strategies/jwt-auth.guard';
 
 //We are using the Controller Decorator to control services of the application
 @Controller('products')
@@ -19,8 +20,12 @@ export class ProductsController {
   //we are using  @UseInterceptors for intercepting file operations using FileInterceptor
   //with image and getting file extensions back. 
   // creating the product with CreateProductDto as the TYpe and upload fike using Express>Multer.File
+
+
   @Post()
   @UseInterceptors(FileInterceptor('image', multerConfig))
+   @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('admin')
   async createProduct(
     @Body() dto: CreateProductDto,
     @UploadedFile() file: Express.Multer.File
@@ -29,28 +34,28 @@ export class ProductsController {
     return this.productsService.create({ ...dto, imageUrl });
   }
 
-  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('admin', 'customer')
   @Get()
   findAll() {
     return this.productsService.findAll();
   }
 
-  // @UseGuards(AuthGuard('jwt'), RolesGuard)
-  // @Roles('admin', 'customer')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('admin', 'customer')
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.productsService.findOne(id);
   }
 
-  // @UseGuards(AuthGuard('jwt'), RolesGuard)
-  // @Roles('admin')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('admin')
   @Put(':id')
   update(@Param('id') id: string, @Body() updateProductDto: UpdateProductDto) {
     return this.productsService.update(id, updateProductDto);
   }
 
-  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('admin')
   @Delete(':id')
   remove(@Param('id') id: string) {

@@ -1,2 +1,0 @@
-export const CATEGORY_SERVICE = 'CATEGORY_SERVICE';
-export const CATEGORY_TCP_PORT = 4001;

@@ -18,6 +18,6 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
     MongooseModule.forFeature([{ name: Category.name, schema: CategorySchema }]),
   ],
   controllers: [CategoryController],
-  providers: [CategoryService],
+  providers: [CategoryService,],
 })
-export class CategoryModule {}
+export class CategoryModule { }

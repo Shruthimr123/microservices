@@ -1,13 +1,3 @@
-// import { NestFactory } from '@nestjs/core';
-// import { ProductsModule } from './products.module';
-// import { ConfigModule } from '@nestjs/config';
-
-// async function bootstrap() {
-//   const app = await NestFactory.create(ProductsModule);
-//   await app.listen(3001);
-//   console.log('Product service HTTP server running on port 3001');
-// }
-// bootstrap();
 
 import { NestFactory } from '@nestjs/core';
 import { ProductsModule } from './products.module';
@@ -32,18 +22,22 @@ async function bootstrap() {
 
   //register TCP microservice
   app.connectMicroservice<MicroserviceOptions>({
-    transport:Transport.TCP,
-    options:{
-      host:config.get<string>('PRODUCT_TCP_HOST'),
-      port:tcpPort
+    transport: Transport.TCP,
+    options: {
+      host: config.get<string>('PRODUCT_TCP_HOST'),
+      port: tcpPort
     }
   })
 
+  app.enableCors({
+    origin: '*',
+    credential: true
+  })
   //start tcp microservice
   await app.startAllMicroservices()
 
   //start http server for image upload , CRUD operations etc
-  await app.listen(port||3001)
+  await app.listen(port || 3002)
 
 
 

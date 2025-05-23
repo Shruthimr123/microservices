@@ -47,11 +47,13 @@ import { ProductsService } from './products.service';
 import { Product, ProductSchema } from './schemas/products.schema';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { PassportModule } from '@nestjs/passport';
+import { JwtAuthGuard } from 'apps/auth/src/strategies/jwt-auth.guard';
+import { RolesGuard } from 'apps/utilitis/guards/roles.guard';
+import { AuthModule } from 'apps/auth/src/auth.module';
 
 @Module({
   imports: [
-
+    AuthModule,
     // Load environment variables globally
     ConfigModule.forRoot({ isGlobal: true }),
 
@@ -93,7 +95,12 @@ import { PassportModule } from '@nestjs/passport';
     ]),
   ],
   controllers: [ProductsController],
-  providers: [ProductsService],
+  providers: [
+    ProductsService,
+    RolesGuard,
+    JwtAuthGuard,
+
+  ],
 })
 export class ProductsModule { }
 
