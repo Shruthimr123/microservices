@@ -12,8 +12,8 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
             imports: [ConfigModule],
             inject: [ConfigService],
             useFactory: async (config: ConfigService) => ({
-                 uri: config.get<string>('MONGO_URI')
-                // uri: "mongodb+srv://shruthimr2003:FHEtfV8ZXZNrAaKF@cluster0.pee1bja.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+                //  uri: config.get<string>('MONGO_URI')
+                uri: "mongodb+srv://shruthimr2003:FHEtfV8ZXZNrAaKF@cluster0.pee1bja.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
 
             })
         }),
